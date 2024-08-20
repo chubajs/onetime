@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertCircle, Lightbulb, FileText } from 'lucide-react';
 import { Helmet } from 'react-helmet'; // Добавлено для управления метаданными
+import { Link } from 'react-router-dom';
 
 const colors = [
   'bg-blue-50', 'bg-green-50', 'bg-yellow-50', 'bg-pink-50', 
@@ -198,19 +199,19 @@ const CheatSheet = () => {
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <img 
-            src="https://onetime.bulaev.net/apps.jpg" 
-            alt="Одноразовые приложения баннер" 
-            className="w-[200px] mb-2"
-          />
-          <a 
-            href="https://onetime.bulaev.net" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <Link to="/">
+            <img 
+              src="https://onetime.bulaev.net/apps.jpg" 
+              alt="Одноразовые приложения баннер" 
+              className="w-[200px] mb-2"
+            />
+          </Link>
+          <Link 
+            to="/"
             className="text-blue-600 hover:text-blue-800 transition-colors text-xs"
           >
             Одноразовые приложения
-          </a>
+          </Link>
         </div>
       </div>
     </div>
