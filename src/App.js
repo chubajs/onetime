@@ -5,6 +5,9 @@ import ClickyTracker from './clickytracker';
 // Add this line to import the Home component
 const Home = lazy(() => import('./Home'));
 
+// ... other imports ...
+const BitmapEditor = lazy(() => import('./100x100'));
+
 const PageViewTracker = () => {
   const location = useLocation();
 
