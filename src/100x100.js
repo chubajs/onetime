@@ -2,11 +2,14 @@ import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 const BitmapEditor = () => {
   const [selectedColor, setSelectedColor] = useState('#000000');
   const [selectedShade, setSelectedShade] = useState('#000000');
   const [bitmap, setBitmap] = useState(() => Array(50).fill().map(() => Array(50).fill('#FFFFFF')));
   const canvasRef = useRef(null);
+  const [serverImage, setServerImage] = useState(null);
 
   const cellSize = 11.5; // Increased by 15% from 10
   const canvasSize = cellSize * 50;
@@ -64,6 +67,35 @@ const BitmapEditor = () => {
   }, [selectedShade]);
 
   useEffect(() => {
+    const updateServer = async () => {
+      try {
+        await fetch(`${API_URL}/api/updateBitmap`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ bitmap }),
+        });
+      } catch (error) {
+        console.error('Failed to update server:', error);
+      }
+    };
+
+    updateServer();
+  }, [bitmap]);
+
+  useEffect(() => {
+    const fetchImage = () => {
+      setServerImage(`${API_URL}/api/current_emoji.png?t=${new Date().getTime()}`);
+    };
+
+    fetchImage();
+    const interval = setInterval(fetchImage, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvasSize, canvasSize);
@@ -95,7 +127,7 @@ const BitmapEditor = () => {
         <html lang="ru" />
         <title>Просто редактор Emoji</title>
         <meta name="description" content="Простой редактор 50x50 Emoji с выбором оттенков цвета." />
-        <meta property="og:title" content="Просто редактор Emoji" />
+        <meta property="og:title" content="Просто ре��актор Emoji" />
         <meta property="og:description" content="Создавайте и редактируйте 50x50 Emoji с различными оттенками цветов." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://onetime.bulaev.net/100x100/" />
@@ -112,6 +144,15 @@ const BitmapEditor = () => {
             className="border border-gray-300 cursor-pointer rounded-lg shadow-md"
           />
         </div>
+        {serverImage && (
+          <div className="flex justify-center mb-6">
+            <img
+              src={serverImage}
+              alt="Server-generated Emoji"
+              className="border border-gray-300 rounded-lg shadow-md"
+            />
+          </div>
+        )}
         <div className="flex flex-col items-center mb-6">
           <div className="flex items-center mb-4">
             <input
