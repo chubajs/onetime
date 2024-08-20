@@ -7,20 +7,23 @@ const colors = [
 ];
 
 const Section = ({ title, content, colorClass, heightClass }) => (
-  <div className={`border border-black shadow-sm mb-4 ${colorClass} ${heightClass} flex flex-col rounded`}>
+  <div className={`border border-black shadow-sm mb-4 ${colorClass} flex flex-col rounded overflow-hidden`} style={{height: heightClass}}>
     <h2 className="text-sm font-semibold text-white bg-gray-800 p-2 border-b border-black">{title}</h2>
     <div className="p-3 flex-1 overflow-auto">
-      {Object.entries(content).map(([key, value]) => (
-        <div key={key} className="mb-2 flex items-start text-xs">
-          {key === 'проблема' && <AlertCircle className="text-red-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
-          {key === 'решение' && <Lightbulb className="text-yellow-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
-          {key === 'пример' && <FileText className="text-blue-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
-          <span className="text-gray-700">{value}</span>
-        </div>
-      ))}
+      {content && typeof content === 'object' ? 
+        Object.entries(content).map(([key, value]) => (
+          <div key={key} className="mb-2 flex items-start text-xs">
+            {key === 'проблема' && <AlertCircle className="text-red-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            {key === 'решение' && <Lightbulb className="text-yellow-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            {key === 'пример' && <FileText className="text-blue-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            <span className="text-gray-700">{value}</span>
+          </div>
+        ))
+      : <p className="text-gray-700">Нет данных</p>}
     </div>
   </div>
 );
+
 
 const CheatSheet = () => {
   const sections = [
@@ -122,31 +125,31 @@ const CheatSheet = () => {
     }
   ];
 
-  // Распределение секций по высотам
-  const bigSections = [sections[0], sections[5], sections[4]]; // Большие секции
-  const mediumSections = [sections[1], sections[6], sections[2]]; // Средние секции
-  const smallSections = [sections[3], sections[7], sections[8], sections[9], sections[10], sections[11]]; // Маленькие секции
+// Распределение секций по высотам
+const bigSections = [sections[0], sections[5], sections[4]]; // Большие секции
+const mediumSections = [sections[1], sections[6], sections[2]]; // Средние секции
+const smallSections = [sections[3], sections[7], sections[8], sections[9], sections[10], sections[11]]; // Маленькие секции
 
-  // Распределение по столбцам
+  // Распределение по столбцам с скорректированными высотами
   const column1 = [
-    { section: bigSections[0], height: 'h-64' },
-    { section: smallSections[0], height: 'h-44' },
-    { section: mediumSections[0], height: 'h-56' },
-    { section: smallSections[1], height: 'h-50' },
+    { section: bigSections[0], height: '240px' },  // +14px
+    { section: smallSections[0], height: '185px' }, // -14px
+    { section: mediumSections[0], height: '229px' },
+    { section: smallSections[1], height: '224px' },
   ];
 
   const column2 = [
-    { section: smallSections[2], height: 'h-45' },     
-    { section: mediumSections[1], height: 'h-58' },
-    { section: bigSections[1], height: 'h-64' },
-    { section: smallSections[3], height: 'h-41' },
+    { section: smallSections[2], height: '180px' }, // -8px
+    { section: mediumSections[1], height: '250px' },
+    { section: bigSections[1], height: '270px' },  // +14px
+    { section: smallSections[3], height: '178px' }, // -6px
   ];
 
   const column3 = [
-    { section: smallSections[4], height: 'h-46' },
-    { section: bigSections[2], height: 'h-64' },
-    { section: smallSections[5], height: 'h-50' },
-    { section: mediumSections[2], height: 'h-57' },
+    { section: smallSections[4], height: '190px' }, // -4px
+    { section: bigSections[2], height: '270px' },  // +14px
+    { section: smallSections[5], height: '190px' }, // -10px
+    { section: mediumSections[2], height: '228px' },
   ];
 
   return (
@@ -155,20 +158,38 @@ const CheatSheet = () => {
         <h1 className="text-2xl font-bold text-center mb-6 text-gray-800 border-b-2 border-gray-200 pb-4">
           Шпаргалка: Проблемы взаимодействия с ИИ и их решения
         </h1>
-        <div className="flex flex-row items-stretch">
-          <div className="flex-1 pr-2">
+        <div className="flex flex-col md:flex-row items-stretch">
+          <div className="w-full md:w-1/3 md:pr-2 flex flex-col">
             {column1.map(({ section, height }, index) => (
-              <Section key={index} title={section.title} content={section.content} colorClass={colors[index % colors.length]} heightClass={height} />
+              <Section 
+                key={index} 
+                title={section.title} 
+                content={section.content} 
+                colorClass={colors[index % colors.length]} 
+                heightClass={height} 
+              />
             ))}
           </div>
-          <div className="flex-1 px-2">
+          <div className="w-full md:w-1/3 md:px-2 flex flex-col">
             {column2.map(({ section, height }, index) => (
-              <Section key={index + column1.length} title={section.title} content={section.content} colorClass={colors[(index + column1.length) % colors.length]} heightClass={height} />
+              <Section 
+                key={index + 4} 
+                title={section.title} 
+                content={section.content} 
+                colorClass={colors[(index + 4) % colors.length]} 
+                heightClass={height} 
+              />
             ))}
           </div>
-          <div className="flex-1 pl-2">
+          <div className="w-full md:w-1/3 md:pl-2 flex flex-col">
             {column3.map(({ section, height }, index) => (
-              <Section key={index + column1.length + column2.length} title={section.title} content={section.content} colorClass={colors[(index + column1.length + column2.length) % colors.length]} heightClass={height} />
+              <Section 
+                key={index + 8} 
+                title={section.title} 
+                content={section.content} 
+                colorClass={colors[(index + 8) % colors.length]} 
+                heightClass={height} 
+              />
             ))}
           </div>
         </div>
