@@ -1,9 +1,11 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ClickyTracker from './clickytracker';
 
 const App = () => {
   return (
     <Router>
+      <ClickyTracker />
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route 
