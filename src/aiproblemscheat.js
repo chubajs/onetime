@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertCircle, Lightbulb, FileText } from 'lucide-react';
+import { Helmet } from 'react-helmet'; // Добавлено для управления метаданными
 
 const colors = [
   'bg-blue-50', 'bg-green-50', 'bg-yellow-50', 'bg-pink-50', 
@@ -13,9 +14,9 @@ const Section = ({ title, content, colorClass, heightClass }) => (
       {content && typeof content === 'object' ? 
         Object.entries(content).map(([key, value]) => (
           <div key={key} className="mb-2 flex items-start text-xs">
-            {key === 'проблема' && <AlertCircle className="text-red-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
-            {key === 'решение' && <Lightbulb className="text-yellow-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
-            {key === 'пример' && <FileText className="text-blue-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            {key === 'проблема' && <AlertCircle aria-label="Проблема" className="text-red-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            {key === 'решение' && <Lightbulb aria-label="Решение" className="text-yellow-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
+            {key === 'пример' && <FileText aria-label="Пример" className="text-blue-500 mr-1 flex-shrink-0 mt-0.5" size={14} />}
             <span className="text-gray-700">{value}</span>
           </div>
         ))
@@ -125,80 +126,91 @@ const CheatSheet = () => {
     }
   ];
 
-// Распределение секций по высотам
-const bigSections = [sections[0], sections[5], sections[4]]; // Большие секции
-const mediumSections = [sections[1], sections[6], sections[2]]; // Средние секции
-const smallSections = [sections[3], sections[7], sections[8], sections[9], sections[10], sections[11]]; // Маленькие секции
+  // Распределение секций по высотам
+  const bigSections = [sections[0], sections[5], sections[4]]; // Большие секции
+  const mediumSections = [sections[1], sections[6], sections[2]]; // Средние секции
+  const smallSections = [sections[3], sections[7], sections[8], sections[9], sections[10], sections[11]]; // Маленькие секции
 
   // Распределение по столбцам с скорректированными высотами
   const column1 = [
-    { section: bigSections[0], height: '240px' },  // +14px
-    { section: smallSections[0], height: '185px' }, // -14px
+    { section: bigSections[0], height: '240px' },
+    { section: smallSections[0], height: '185px' },
     { section: mediumSections[0], height: '229px' },
     { section: smallSections[1], height: '224px' },
   ];
 
   const column2 = [
-    { section: smallSections[2], height: '180px' }, // -8px
+    { section: smallSections[2], height: '180px' },
     { section: mediumSections[1], height: '250px' },
-    { section: bigSections[1], height: '270px' },  // +14px
-    { section: smallSections[3], height: '178px' }, // -6px
+    { section: bigSections[1], height: '270px' },
+    { section: smallSections[3], height: '178px' },
   ];
 
   const column3 = [
-    { section: smallSections[4], height: '190px' }, // -4px
-    { section: bigSections[2], height: '270px' },  // +14px
-    { section: smallSections[5], height: '190px' }, // -10px
+    { section: smallSections[4], height: '190px' },
+    { section: bigSections[2], height: '270px' },
+    { section: smallSections[5], height: '190px' },
     { section: mediumSections[2], height: '228px' },
   ];
 
+  const renderColumn = (column, startIndex) => (
+    <div className="w-full md:w-1/3 md:px-2 flex flex-col">
+      {column.map(({ section, height }, index) => (
+        <Section 
+          key={startIndex + index} 
+          title={section?.title}
+          content={section?.content}
+          colorClass={colors[(startIndex + index) % colors.length]} 
+          heightClass={height} 
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-7xl mx-auto bg-white p-6 border border-black">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800 border-b-2 border-gray-200 pb-4">
-          Шпаргалка: Проблемы взаимодействия с ИИ и их решения
-        </h1>
-        <div className="flex flex-col md:flex-row items-stretch">
-          <div className="w-full md:w-1/3 md:pr-2 flex flex-col">
-            {column1.map(({ section, height }, index) => (
-              <Section 
-                key={index} 
-                title={section.title} 
-                content={section.content} 
-                colorClass={colors[index % colors.length]} 
-                heightClass={height} 
-              />
-            ))}
+      <Helmet>
+        <html lang="ru" />
+        <title>Шпаргалка: Проблемы взаимодействия с ИИ и их решения</title>
+        <meta name="description" content="Подробное руководство по решению проблем при взаимодействии с искусственным интеллектом. Узнайте, как эффективно использовать ИИ и избегать распространенных ошибок." />
+        <meta property="og:title" content="Шпаргалка по взаимодействию с ИИ" />
+        <meta property="og:description" content="Ключевые проблемы и решения при работе с ИИ. Повысьте эффективность использования искусственного интеллекта." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://onetime.bulaev.net/aiproblemscheat/" />
+        <meta property="og:image" content="https://onetime.bulaev.net/apps.jpg" />
+      </Helmet>
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white p-6 border border-black mb-4">
+          <h1 className="text-2xl font-bold text-center mb-6 text-gray-800 border-b-2 border-gray-200 pb-4">
+            Шпаргалка: Проблемы взаимодействия с ИИ и их решения
+          </h1>
+          <div className="flex flex-col md:flex-row items-stretch">
+            {renderColumn(column1, 0)}
+            {renderColumn(column2, 4)}
+            {renderColumn(column3, 8)}
           </div>
-          <div className="w-full md:w-1/3 md:px-2 flex flex-col">
-            {column2.map(({ section, height }, index) => (
-              <Section 
-                key={index + 4} 
-                title={section.title} 
-                content={section.content} 
-                colorClass={colors[(index + 4) % colors.length]} 
-                heightClass={height} 
-              />
-            ))}
-          </div>
-          <div className="w-full md:w-1/3 md:pl-2 flex flex-col">
-            {column3.map(({ section, height }, index) => (
-              <Section 
-                key={index + 8} 
-                title={section.title} 
-                content={section.content} 
-                colorClass={colors[(index + 8) % colors.length]} 
-                heightClass={height} 
-              />
-            ))}
+          <div className="mt-6 text-center text-xs text-gray-600">
+            <a href="https://t.me/sergiobulaev/" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-blue-600 transition-colors">
+              Сергей Булаев AI 🤖
+            </a>
+            {" - об AI и не только "}
+            <span className="text-gray-500">(@sergiobulaev)</span>
           </div>
         </div>
-        <div className="mt-6 text-center text-xs text-gray-600">
-          <a href="https://t.me/sergiobulaev/" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-blue-600 transition-colors">
-            Сергей Булаев AI 🤖
+        <div className="flex flex-col items-center">
+          <img 
+            src="https://onetime.bulaev.net/apps.jpg" 
+            alt="Одноразовые приложения баннер" 
+            className="w-[200px] mb-2"
+          />
+          <a 
+            href="https://onetime.bulaev.net" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 hover:text-blue-800 transition-colors text-xs"
+          >
+            Одноразовые приложения
           </a>
-          {" - об AI и не только "}
-          <span className="text-gray-500">(@sergiobulaev)</span>
         </div>
       </div>
     </div>
