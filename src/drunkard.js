@@ -166,14 +166,16 @@ const RandomWalkChart = () => {
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
-      width: SVG_WIDTH + 'px',
+      width: '100%',
+      maxWidth: SVG_WIDTH + 'px',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#f0f0f0',
       borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      boxSizing: 'border-box'
     }}>
-      <h1 style={{ textAlign: 'center', color: '#333' }}>
+      <h1 style={{ textAlign: 'center', color: '#333', fontSize: '24px', marginBottom: '15px' }}>
         Динамически масштабируемое{' '}
         <a 
           href="https://t.me/sergiobulaev/365" 
@@ -184,7 +186,7 @@ const RandomWalkChart = () => {
           случайное блуждание
         </a>
       </h1>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', gap: '10px' }}>
         <button onClick={() => startAnimation(1)} disabled={isAnimating} style={buttonStyle(isAnimating)}>
           1 блуждание
         </button>
@@ -194,7 +196,7 @@ const RandomWalkChart = () => {
         <button onClick={() => startAnimation(6)} disabled={isAnimating} style={buttonStyle(isAnimating)}>
           6 блужданий
         </button>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1, justifyContent: 'flex-end' }}>
           <label htmlFor="stepsInput" style={{ marginRight: '10px' }}>Шаги:</label>
           <input
             id="stepsInput"
@@ -206,7 +208,7 @@ const RandomWalkChart = () => {
             style={{ width: '80px', padding: '5px', fontSize: '16px' }}
           />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1, justifyContent: 'flex-end' }}>
           <label htmlFor="speedInput" style={{ marginRight: '10px' }}>Скорость:</label>
           <input
             id="speedInput"
@@ -221,30 +223,38 @@ const RandomWalkChart = () => {
           <span style={{ marginLeft: '5px' }}>{animationSpeed.toFixed(1)}x</span>
         </div>
       </div>
-      <canvas
-        ref={canvasRef}
-        width={SVG_WIDTH}
-        height={SVG_HEIGHT}
-        style={{
-          border: '1px solid #ddd',
-          borderRadius: '5px',
-          display: 'block',
-          margin: '0 auto',
-          backgroundColor: 'white'
-        }}
-      />
-      <canvas
-        ref={distanceCanvasRef}
-        width={SVG_WIDTH}
-        height={DISTANCE_HEIGHT}
-        style={{
-          border: '1px solid #ddd',
-          borderRadius: '5px',
-          display: 'block',
-          margin: '10px auto',
-          backgroundColor: 'white'
-        }}
-      />
+      <div style={{ width: '100%', overflow: 'hidden' }}>
+        <canvas
+          ref={canvasRef}
+          width={SVG_WIDTH}
+          height={SVG_HEIGHT}
+          style={{
+            border: '1px solid #ddd',
+            borderRadius: '5px',
+            display: 'block',
+            margin: '0 auto',
+            backgroundColor: 'white',
+            maxWidth: '100%',
+            height: 'auto'
+          }}
+        />
+      </div>
+      <div style={{ width: '100%', overflow: 'hidden', marginTop: '10px' }}>
+        <canvas
+          ref={distanceCanvasRef}
+          width={SVG_WIDTH}
+          height={DISTANCE_HEIGHT}
+          style={{
+            border: '1px solid #ddd',
+            borderRadius: '5px',
+            display: 'block',
+            margin: '0 auto',
+            backgroundColor: 'white',
+            maxWidth: '100%',
+            height: 'auto'
+          }}
+        />
+      </div>
       <div style={{
         textAlign: 'center',
         marginTop: '20px',
@@ -279,7 +289,7 @@ const buttonStyle = (isDisabled) => ({
 });
 
 const Drunkard = () => (
-  <div>
+  <div style={{ padding: '20px' }}>
     <RandomWalkChart />
   </div>
 );
