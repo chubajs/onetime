@@ -2,25 +2,55 @@ import React from 'react';
 import { Palette, Camera, Mountain, Building, Sparkles } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const colors = [
   'bg-blue-50', 'bg-green-50', 'bg-yellow-50', 'bg-pink-50', 
   'bg-purple-50', 'bg-indigo-50', 'bg-red-50', 'bg-orange-50'
 ];
 
-const Article = ({ title, content, colorClass, icon: Icon, height }) => (
-  <div className={`border border-black shadow-sm mb-4 ${colorClass} flex flex-col rounded overflow-hidden`} style={{height}}>
-    <h4 className="text-xs font-semibold text-white bg-gray-800 p-2 border-b border-black flex items-center">
-      <Icon className="text-yellow-500 mr-2" size={14} />
-      {title}
-    </h4>
-    <div className="p-2 flex-1 overflow-auto">
-      <div className="flex items-start text-xs">
-        <span className="text-gray-700">{content}</span>
+const Article = ({ title, content, colorClass, icon: Icon, height }) => {
+  const [copiedWord, setCopiedWord] = useState(null);
+
+  const handleWordClick = (word) => {
+    navigator.clipboard.writeText(word).then(() => {
+      setCopiedWord(word);
+      setTimeout(() => setCopiedWord(null), 2000);
+    });
+  };
+
+  const renderContent = () => {
+    return content.split(', ').map((word, index) => (
+      <span
+        key={index}
+        className="cursor-pointer hover:underline inline-block"
+        onClick={() => handleWordClick(word)}
+      >
+        {word}
+        {index < content.split(', ').length - 1 && (
+          <span className="mr-1">,</span>
+        )}
+        {copiedWord === word && (
+          <span className="text-green-500 ml-1">(Copied!)</span>
+        )}
+      </span>
+    ));
+  };
+
+  return (
+    <div className={`border border-black shadow-sm mb-4 ${colorClass} flex flex-col rounded overflow-hidden`} style={{height}}>
+      <h4 className="text-xs font-semibold text-white bg-gray-800 p-2 border-b border-black flex items-center">
+        <Icon className="text-yellow-500 mr-2 flex-shrink-0" size={14} />
+        <span className="truncate">{title}</span>
+      </h4>
+      <div className="p-2 flex-1 overflow-auto">
+        <div className="text-xs text-gray-700 break-words">
+          {renderContent()}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Section = ({ title, articles }) => (
   <div className="mb-6 last:mb-0 border border-gray-300 rounded p-3 relative">
@@ -289,7 +319,7 @@ const MJHints = () => {
       <Helmet>
         <html lang="ru" />
         <title>Шпаргалка: Подсказки для Midjourney</title>
-        <meta name="description" content="Подробное руководство по созданию эффективных промптов для Midjourney. Узнайте, как улучшить ваши результаты в генерации изображений." />
+        <meta name="description" content="Подробное руково��ство по созданию эффективных промптов для Midjourney. Узнайте, как улучшить ваши результаты в генерации изображений." />
         <meta property="og:title" content="Шпаргалка по Midjourney" />
         <meta property="og:description" content="Ключевые подсказки и примеры для создания впечатляющих изображний с помощью Midjourney." />
         <meta property="og:type" content="website" />
