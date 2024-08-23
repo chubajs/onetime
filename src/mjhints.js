@@ -133,7 +133,7 @@ const MJHints = () => {
           title: "Погода и природные элементы",
           content: "Foggy, Sunset, Snowfall, Rain, Lush vegetation, Rocky terrain, Tropical island, Sand dunes, Depth of view, Volumetric lighting",
           icon: Mountain,
-          height: "110px"
+          height: "109px"
         },
         {
           title: "Время суток и сезоны",
@@ -226,13 +226,13 @@ const MJHints = () => {
           title: "Культурные и исторические элементы",
           content: "Belle Epoque, Arabic, Victorian, Aztec, Japanese style, Historical cityscapes",
           icon: Sparkles,
-          height: "112px"
+          height: "102px"
         },
         {
           title: "Органические и природные формы",
           content: "Fractal leaf structures, Floating landscapes, Fantasy flora, Geometric plants, Complex spirals, Botanical gardens, Immersive natural environments",
           icon: Sparkles,
-          height: "160px"
+          height: "137px"
         },
         {
           title: "Фантастические существа",
@@ -250,7 +250,7 @@ const MJHints = () => {
           title: "Символизм и метафоры",
           content: "Visual allegories, Dreamscape symbolism, Archetypal imagery, Surrealist metaphors, Psychological landscapes, Mythological references",
           icon: Sparkles,
-          height: "128px"
+          height: "118px"
         }
       ]
     }
