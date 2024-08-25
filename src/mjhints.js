@@ -1,5 +1,5 @@
 import React from 'react';
-import { Palette, Camera, Mountain, Building, Sparkles } from 'lucide-react';
+import { Palette, Camera, Mountain, Building, Sparkles, Sun, Cloud, Clock, Leaf, Zap, Feather, Compass, Layers, Droplet, Wind } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -13,9 +13,9 @@ const Article = ({ title, content, colorClass, icon: Icon, height }) => {
   const [copiedWord, setCopiedWord] = useState(null);
 
   const handleWordClick = (word) => {
-    navigator.clipboard.writeText(word).then(() => {
+    navigator.clipboard.writeText(word.toLowerCase()).then(() => {
       setCopiedWord(word);
-      setTimeout(() => setCopiedWord(null), 2000);
+      setTimeout(() => setCopiedWord(null), 1000);
     });
   };
 
@@ -23,15 +23,12 @@ const Article = ({ title, content, colorClass, icon: Icon, height }) => {
     return content.split(', ').map((word, index) => (
       <span
         key={index}
-        className="cursor-pointer hover:underline inline-block"
+        className={`cursor-pointer inline-block font-bold ${copiedWord === word ? 'text-blue-600' : 'hover:underline'}`}
         onClick={() => handleWordClick(word)}
       >
-        {word}
+        {copiedWord === word ? "скопировано" : word.toLowerCase()}
         {index < content.split(', ').length - 1 && (
           <span className="mr-1">,</span>
-        )}
-        {copiedWord === word && (
-          <span className="text-green-500 ml-1">(Copied!)</span>
         )}
       </span>
     ));
@@ -86,23 +83,23 @@ const MJHints = () => {
         {
           title: "Стили рендеринга",
           content: "Unreal Engine, Octane render, Blender render, Redshift rendering, V-ray render, C4D, Cel shaded, Stylized, Concept art",
-          icon: Palette,
+          icon: Layers,
           height: "104px"
         },
         {
           title: "Освещение и эффекты",
           content: "Cinematic lighting, Volumetric lighting, HDR, Global illumination, Soft shadows, Backlit, Neon lighting, Rim lighting, Chiaroscuro, Theatrical lighting, Liminal space, Depth of field, Long exposure",
-          icon: Sparkles,
+          icon: Sun,
           height: "140px"
         },
         {
           title: "Текстуры и поверхности",
           content: "Filigree, Matte, Glossy, Metallic, Transparent, Smooth, Detailed, Intricate, Photographic quality",
-          icon: Palette,
+          icon: Droplet,
           height: "104px"
         },
         {
-          title: "Цветовые палитры",
+          title: "Цветовые палит��ы",
           content: "Pastel, Vantablack, Sepia, Monochrome, Warm tones, Cold tones, Gradient, High contrast, Rich colors, Color grading",
           icon: Palette,
           height: "105px"
@@ -110,7 +107,7 @@ const MJHints = () => {
         {
           title: "Материалы",
           content: "Wood, Metal, Glass, Resin, Fabric, Organic, Porcelain, Concrete",
-          icon: Palette,
+          icon: Feather,
           height: "84px"
         }
       ]
@@ -127,19 +124,19 @@ const MJHints = () => {
         {
           title: "Кадрирование и ориентация",
           content: "In-frame, Long shot, Fullshot, Extreme close-up, Symmetrical, Asymmetrical, Curvilinear space, Perspective shift",
-          icon: Camera,
+          icon: Compass,
           height: "112px"
         },
         {
           title: "Движение и динамика",
           content: "Flow, Motion blur, Action shot, Static, Frozen in time, Cinematic movement",
-          icon: Camera,
+          icon: Wind,
           height: "96px"
         },
         {
           title: "Глубина и масштаб",
           content: "Foreground detail, Middle ground, Background, Sense of scale, Miniature, Gigantic",
-          icon: Camera,
+          icon: Layers,
           height: "84px"
         }
       ]
@@ -156,25 +153,25 @@ const MJHints = () => {
         {
           title: "Атмосфера и настроение",
           content: "Eerie, Mystical, Ethereal, Liminal space, Hyperrealistic, Surreal, Immersive detail, Dark fantasy, Ineffably mysterious, Cozy",
-          icon: Mountain,
+          icon: Cloud,
           height: "108px"
         },
         {
           title: "Погода и природные элементы",
           content: "Foggy, Sunset, Snowfall, Rain, Lush vegetation, Rocky terrain, Tropical island, Sand dunes, Depth of view, Volumetric lighting",
-          icon: Mountain,
+          icon: Clock,
           height: "109px"
         },
         {
           title: "Время суток и сезоны",
           content: "Golden hour, Blue hour, Midnight, Dawn, Dusk, Spring bloom, Autumn foliage, Winter wonderland, Summer haze",
-          icon: Mountain,
+          icon: Leaf,
           height: "96px"
         },
         {
           title: "Экосистемы и биомы",
           content: "Coral reef, Rainforest canopy, Arctic tundra, Savanna grasslands, Deep sea abyss, Volcanic landscape, Bioluminescent cave, Geothermal springs, Martian terrain",
-          icon: Mountain,
+          icon: Zap,
           height: "110px"
         }
       ]
@@ -191,25 +188,25 @@ const MJHints = () => {
         {
           title: "Текстуры и узоры",
           content: "Fractal structure, Filigree, Knitted textures, Organic twisting, Geometric designs, Scales, Symmetrical patterns, Transparent wings, Intricate details",
-          icon: Building,
+          icon: Droplet,
           height: "108px"
         },
         {
           title: "Материалы и оекты",
           content: "Resin cube, Smooth facade, Kelp algae, Glass flowers, Intricate jewelry, Armor plating, Wooden joinery, Soft fabrics",
-          icon: Building,
+          icon: Feather,
           height: "96px"
         },
         {
           title: "Механизмы и технологии",
           content: "Clockwork, Steampunk machinery, Holographic displays, Nanotech, Biopunk implants, Quantum computers",
-          icon: Building,
+          icon: Compass,
           height: "96px"
         },
         {
           title: "Миниатюры и детализация",
           content: "Microscopic details, Intricate miniatures, Elaborate dioramas, Precision craftsmanship, Delicate engravings, Nano-scale structures",
-          icon: Building,
+          icon: Layers,
           height: "108px"
         }
       ]
@@ -226,25 +223,25 @@ const MJHints = () => {
         {
           title: "Художественные движения",
           content: "Abstract expressionism, Bauhaus, Fusion art, Rococo, Impressionist painting",
-          icon: Sparkles,
+          icon: Palette,
           height: "88px"
         },
         {
           title: "Принципы дизайна",
           content: "Negative space, Symmetry, Precision details, Stylized, Low contrast details, Parameteric details",
-          icon: Sparkles,
+          icon: Compass,
           height: "100px"
         },
         {
           title: "Освещение и спецэффекты",
           content: "Cinematic lighting, Immense detail, Color grading, Visual clarity, Dynamic contrast, Soft studio lighting, Volumetric light, Lumen reflections",
-          icon: Sparkles,
+          icon: Sun,
           height: "128px"
         },
         {
           title: "Экспериментальные техники",
           content: "Glitch art, Databending, Generative adversarial networks, Neural style transfer, Fractal flame algorithms, Cellular automata art",
-          icon: Sparkles,
+          icon: Zap,
           height: "112px"
         }
       ]
@@ -255,19 +252,19 @@ const MJHints = () => {
         {
           title: "Культурные и исторические элементы",
           content: "Belle Epoque, Arabic, Victorian, Aztec, Japanese style, Historical cityscapes",
-          icon: Sparkles,
+          icon: Clock,
           height: "102px"
         },
         {
           title: "Органические и природные формы",
           content: "Fractal leaf structures, Floating landscapes, Fantasy flora, Geometric plants, Complex spirals, Botanical gardens, Immersive natural environments",
-          icon: Sparkles,
+          icon: Leaf,
           height: "137px"
         },
         {
           title: "Фантастические существа",
           content: "Mythical beasts, Alien lifeforms, Hybrid creatures, Microscopic organisms, Sentient machines",
-          icon: Sparkles,
+          icon: Zap,
           height: "100px"
         },
         {
@@ -279,7 +276,7 @@ const MJHints = () => {
         {
           title: "Символизм и метафоры",
           content: "Visual allegories, Dreamscape symbolism, Archetypal imagery, Surrealist metaphors, Psychological landscapes, Mythological references",
-          icon: Sparkles,
+          icon: Palette,
           height: "118px"
         }
       ]
@@ -318,19 +315,22 @@ const MJHints = () => {
     <div className="min-h-screen bg-[#ECEAE1] p-4">
       <Helmet>
         <html lang="ru" />
-        <title>Шпаргалка: Подсказки для Midjourney</title>
-        <meta name="description" content="Подробное руково��ство по созданию эффективных промптов для Midjourney. Узнайте, как улучшить ваши результаты в генерации изображений." />
-        <meta property="og:title" content="Шпаргалка по Midjourney" />
-        <meta property="og:description" content="Ключевые подсказки и примеры для создания впечатляющих изображний с помощью Midjourney." />
+        <title>Идеи для промптов Midjourney | Улучшите ваши AI-генерированные изображения</title>
+        <meta name="description" content="Справочник ключевых слов и концепций для вашего вдохновения при создании изображений с помощью Midjourney." />
+        <meta property="og:title" content="Идеи для промптов Midjourney | Улучшите ваши AI изображения" />
+        <meta property="og:description" content="Откройте для себя обширную коллекцию ключевых слов, стилей и концепций для создания уникальных и впечатляющих изображений с помощью Midjourney. Повысьте качество ваших AI-генерированных изображений." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://onetime.bulaev.net/mjhints/" />
         <meta property="og:image" content="https://onetime.bulaev.net/apps.jpg" />
       </Helmet>
       <div className="max-w-7xl mx-auto">
         <div className="bg-white p-6 border border-black mb-4">
-          <h1 className="text-2xl font-bold text-center mb-6 text-gray-800 border-b-2 border-gray-200 pb-4">
-            Шпаргалка: Подсказки для Midjourney
+          <h1 className="text-2xl font-bold text-center mb-2 text-gray-800">
+            Идеи для промптов Midjourney
           </h1>
+          <p className="text-center text-sm text-gray-600 mb-6 border-b-2 border-gray-200 pb-4">
+            Коллекция ключевых слов и концепций для создания впечатляющих изображений. Нажмите на ключевое слово, чтобы скопировать и использовать в ваших промптах.
+          </p>
           <div className="flex flex-col md:flex-row items-stretch">
             {renderColumn(column1, 0)}
             {renderColumn(column2, 2)}
